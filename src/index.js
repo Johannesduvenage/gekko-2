@@ -5,6 +5,8 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import TSChart from './TSChart'
 
+// start with npm start
+
 ReactDOM.render(<TSChart />, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
