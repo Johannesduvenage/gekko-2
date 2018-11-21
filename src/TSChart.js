@@ -50,22 +50,26 @@ class TSChart extends Component {
         let dataFromQuaalude = await fetch("http://localhost:3001/tsdata/"+ this.state.value);
         let parsedResponse = await dataFromQuaalude.json();
         console.log("Data received: " + parsedResponse);
+        
+        let sequenceLabels = [];
+        let dataSeries = []
+        for (let k in parsedResponse) {
+            sequenceLabels.push(k);
+            dataSeries.push(parsedResponse[k]);
+        }
+
+        parsedResponse.sequenceLabels = sequenceLabels;
+        parsedResponse.dataSeries = dataSeries;
         return parsedResponse;
     }
 
     async changeData(event) {
         let dataFromQuaalude = await this.getDataFromQuaalude();
-        let sequenceLabels = [];
-        let dataSeries = []
-        for (let k in dataFromQuaalude) {
-            sequenceLabels.push(k);
-            dataSeries.push(dataFromQuaalude[k]);
-        }
 
-        console.log("Updating chart with data. Num rows: " + sequenceLabels.length)
+        console.log("Updating chart with data. Num rows: " + dataFromQuaalude.sequenceLabels.length)
         this.myLineChart.data.datasets.forEach( (dataset) => { 
-            dataset.labels = sequenceLabels;
-            dataset.data = dataSeries;
+            dataset.labels = dataFromQuaalude.sequenceLabels;
+            dataset.data = dataFromQuaalude.dataSeries;
         });
 
         this.myLineChart.update()
@@ -76,21 +80,14 @@ class TSChart extends Component {
 
         let dataFromQuaalude = await this.getDataFromQuaalude();
 
-        let sequenceLabels = [];
-        let dataSeries = []
-        for (let k in dataFromQuaalude) {
-            sequenceLabels.push(k);
-            dataSeries.push(dataFromQuaalude[k]);
-        }
-
         console.log("Added the following data to chart: " + dataFromQuaalude);
         this.myLineChart = new Chart(node, {
             type: 'line',
             data: {
-                labels: sequenceLabels,
+                labels: dataFromQuaalude.sequenceLabels,
                 datasets: [{
                     label: 'Price',
-                    data: dataSeries,
+                    data: dataFromQuaalude.dataSeries,
                     fill: false
                 }],
                 
