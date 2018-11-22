@@ -12,7 +12,7 @@ class TSChart extends Component {
         this.changeData = this.changeData.bind(this);
         this.handleChangeSymbol = this.handleChangeSymbol.bind(this);
         this.enterPressed = this.enterPressed.bind(this);
-        this.state = {value: 'AAPL'};
+        this.state = {symbol: 'AAPL'};
     }
 
     render() {
@@ -23,7 +23,7 @@ class TSChart extends Component {
                     <canvas ref={this.chartRef}></canvas>
                 </div>
                 <div>
-                    <input type="text" value={this.state.value} onChange={this.handleChangeSymbol} onKeyPress={this.enterPressed}></input>
+                    <input type="text" value={this.state.symbol} onChange={this.handleChangeSymbol} onKeyPress={this.enterPressed}></input>
                 </div>
                 <div>
                     <button onClick={this.changeData}>Change Data</button>
@@ -37,7 +37,7 @@ class TSChart extends Component {
     }
 
     handleChangeSymbol(event) {
-        this.setState({value: event.target.value});
+        this.setState({symbol: event.target.value});
         console.log("Symbol changed to " + event.target.value);
     }
 
@@ -50,7 +50,7 @@ class TSChart extends Component {
 
     async getDataFromQuaalude() {
         console.log("Getting Data From Quaalude..");
-        let dataFromQuaalude = await fetch("http://localhost:3001/tsdata/"+ this.state.value);
+        let dataFromQuaalude = await fetch("http://localhost:3001/tsdata/"+ this.state.symbol);
         let parsedResponse = await dataFromQuaalude.json();
         console.log("Data received: " + parsedResponse);
         
@@ -72,7 +72,7 @@ class TSChart extends Component {
         console.log("Updating chart with data. Num rows: " + dataFromQuaalude.sequenceLabels.length)
         this.myLineChart.data.labels = dataFromQuaalude.sequenceLabels;
         this.myLineChart.data.datasets.forEach( (dataset) => { 
-            dataset.label = this.state.value + ' Price';
+            dataset.label = this.state.symbol + ' Price';
             dataset.data = dataFromQuaalude.dataSeries;
         });
 
@@ -90,7 +90,7 @@ class TSChart extends Component {
             data: {
                 labels: dataFromQuaalude.sequenceLabels,
                 datasets: [{
-                    label: this.state.value + ' Price',
+                    label: this.state.symbol + ' Price',
                     data: dataFromQuaalude.dataSeries,
                     fill: false,
                     pointRadius: 0,
