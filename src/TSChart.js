@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import Chart from 'chart.js';
 import './TSChart.css';
 
+// Color scheme: https://coolors.co/fe938c-e6b89c-ead2ac-9cafb7-4281a4
+
 class TSChart extends Component {
 
     constructor(props) {
@@ -16,7 +18,8 @@ class TSChart extends Component {
     render() {
         return (
             <div>
-                <div className="chartDiv">
+                <h1>My Portfolio</h1> 
+                <div>
                     <canvas ref={this.chartRef}></canvas>
                 </div>
                 <div>
@@ -67,8 +70,9 @@ class TSChart extends Component {
         let dataFromQuaalude = await this.getDataFromQuaalude();
 
         console.log("Updating chart with data. Num rows: " + dataFromQuaalude.sequenceLabels.length)
+        this.myLineChart.data.labels = dataFromQuaalude.sequenceLabels;
         this.myLineChart.data.datasets.forEach( (dataset) => { 
-            dataset.labels = dataFromQuaalude.sequenceLabels;
+            dataset.label = this.state.value + ' Price';
             dataset.data = dataFromQuaalude.dataSeries;
         });
 
@@ -86,9 +90,12 @@ class TSChart extends Component {
             data: {
                 labels: dataFromQuaalude.sequenceLabels,
                 datasets: [{
-                    label: 'Price',
+                    label: this.state.value + ' Price',
                     data: dataFromQuaalude.dataSeries,
-                    fill: false
+                    fill: false,
+                    pointRadius: 0,
+                    borderColor: '#4281a4',
+                    borderWidth: 1
                 }],
                 
             },
