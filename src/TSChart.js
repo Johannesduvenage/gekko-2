@@ -41,6 +41,9 @@ class TSChart extends Component {
         console.log("Symbol changed to " + event.target.value);
     }
 
+    /**
+     * Alternate handler for changeData() event.
+     */
     enterPressed(event) {
         if (event.key === 'Enter') {
             console.log("Enter Pressed");
@@ -48,7 +51,7 @@ class TSChart extends Component {
         }
     }
 
-    async getDataFromQuaalude() {
+    async getSymbolDataFromQuaalude() {
         console.log("Getting Data From Quaalude..");
         let dataFromQuaalude = await fetch("http://localhost:3001/tsdata/"+ this.state.symbol);
         let parsedResponse = await dataFromQuaalude.json();
@@ -66,23 +69,65 @@ class TSChart extends Component {
         return parsedResponse;
     }
 
+    async getMultiSymbolDataFromQuaalude() {
+        console.log('Getting Multidata from Quaalude..');
+
+        let sym = this.state.symbol.replace(/ /g,'')
+        let dataFromQuaalude = await fetch ('http://localhost:3001/multitsdata?symbols=' + sym);
+        let parsedResponse = await dataFromQuaalude.json();
+        console.log(parsedResponse)
+
+        parsedResponse.sequenceLabels = parsedResponse['X Axis Labels'];
+        parsedResponse.dataSeriesList = parsedResponse['Y Axis Data'];
+        return parsedResponse;
+    }
+
     async changeData(event) {
-        let dataFromQuaalude = await this.getDataFromQuaalude();
 
-        console.log("Updating chart with data. Num rows: " + dataFromQuaalude.sequenceLabels.length)
-        this.myLineChart.data.labels = dataFromQuaalude.sequenceLabels;
-        this.myLineChart.data.datasets.forEach( (dataset) => { 
-            dataset.label = this.state.symbol + ' Price';
-            dataset.data = dataFromQuaalude.dataSeries;
-        });
+        if (this.state.symbol.includes(',')) {
 
-        this.myLineChart.update()
+            // BUG: Trailing comma's screw this up
+            
+            let dataFromQuaalude = await this.getMultiSymbolDataFromQuaalude();
+            console.log(dataFromQuaalude.sequenceLabels);
+            console.log('Updating chart with multi data. Num Rows: ' + dataFromQuaalude.sequenceLabels.length);
+            
+            // rebuild the entire data object for multi-responses.
+            this.myLineChart.data.labels = dataFromQuaalude.sequenceLabels;
+            this.myLineChart.data.datasets = [];
+            
+            for (let dataSeries of dataFromQuaalude.dataSeriesList) {
+                this.myLineChart.data.datasets.push ({
+                    label: ' Price', // TODO: Add symbol name
+                    data: dataSeries,
+                    fill: false,
+                    pointRadius: 0,
+                    borderColor: '#4281a4',
+                    borderWidth: 1
+                });
+            }
+
+            this.myLineChart.update();
+
+        } else {
+
+            let dataFromQuaalude = await this.getSymbolDataFromQuaalude();
+
+            console.log("Updating chart with data. Num rows: " + dataFromQuaalude.sequenceLabels.length)
+            this.myLineChart.data.labels = dataFromQuaalude.sequenceLabels;
+            this.myLineChart.data.datasets.forEach( (dataset) => { 
+                dataset.label = this.state.symbol + ' Price';
+                dataset.data = dataFromQuaalude.dataSeries;
+            });
+
+            this.myLineChart.update()
+        }
     }
 
     async doChart() {
         const node = this.chartRef.current;
 
-        let dataFromQuaalude = await this.getDataFromQuaalude();
+        let dataFromQuaalude = await this.getSymbolDataFromQuaalude();
 
         console.log("Added the following data to chart: " + dataFromQuaalude);
         this.myLineChart = new Chart(node, {

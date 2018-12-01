@@ -4,7 +4,15 @@ import './index.css';
 import * as serviceWorker from './serviceWorker';
 import TSChart from './TSChart'
 
-// start with npm start
+// start development server:
+// > npm start
+
+// execute tests:
+// > npm test
+
+// create production build:
+// > npm run build
+
 
 ReactDOM.render(<TSChart />, document.getElementById('root'));
 
