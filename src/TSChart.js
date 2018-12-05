@@ -13,6 +13,7 @@ class TSChart extends Component {
         this.handleChangeSymbol = this.handleChangeSymbol.bind(this);
         this.enterPressed = this.enterPressed.bind(this);
         this.state = {symbol: 'AAPL'};
+        this.colorScheme = 'fe938c-e6b89c-ead2ac-9cafb7-4281a4'.split('-');
     }
 
     render() {
@@ -51,6 +52,8 @@ class TSChart extends Component {
         }
     }
 
+    // TODO: A lot of repetitive code from here on down from when proving out - need to refactor.
+
     async getSymbolDataFromQuaalude() {
         console.log("Getting Data From Quaalude..");
         let dataFromQuaalude = await fetch("http://localhost:3001/tsdata/"+ this.state.symbol);
@@ -79,6 +82,7 @@ class TSChart extends Component {
 
         parsedResponse.sequenceLabels = parsedResponse['X Axis Labels'];
         parsedResponse.dataSeriesList = parsedResponse['Y Axis Data'];
+        parsedResponse.symbolList = parsedResponse['Symbols'];
         return parsedResponse;
     }
 
@@ -87,7 +91,6 @@ class TSChart extends Component {
         if (this.state.symbol.includes(',')) {
 
             // BUG: Trailing comma's screw this up
-            
             let dataFromQuaalude = await this.getMultiSymbolDataFromQuaalude();
             console.log(dataFromQuaalude.sequenceLabels);
             console.log('Updating chart with multi data. Num Rows: ' + dataFromQuaalude.sequenceLabels.length);
@@ -96,13 +99,14 @@ class TSChart extends Component {
             this.myLineChart.data.labels = dataFromQuaalude.sequenceLabels;
             this.myLineChart.data.datasets = [];
             
+            let i = 0;
             for (let dataSeries of dataFromQuaalude.dataSeriesList) {
                 this.myLineChart.data.datasets.push ({
-                    label: ' Price', // TODO: Add symbol name
+                    label: dataFromQuaalude.symbolList[i++] + ' Price',
                     data: dataSeries,
                     fill: false,
                     pointRadius: 0,
-                    borderColor: '#4281a4',
+                    borderColor: '#' + this.colorScheme[i % this.colorScheme.length],
                     borderWidth: 1
                 });
             }
@@ -115,9 +119,15 @@ class TSChart extends Component {
 
             console.log("Updating chart with data. Num rows: " + dataFromQuaalude.sequenceLabels.length)
             this.myLineChart.data.labels = dataFromQuaalude.sequenceLabels;
-            this.myLineChart.data.datasets.forEach( (dataset) => { 
-                dataset.label = this.state.symbol + ' Price';
-                dataset.data = dataFromQuaalude.dataSeries;
+            this.myLineChart.data.datasets = [];
+
+            this.myLineChart.data.datasets.push ({
+                label: this.state.symbol + ' Price',
+                data: dataFromQuaalude.dataSeries,
+                fill: false,
+                pointRadius: 0,
+                borderColor: '#4281a4',
+                borderWidth: 1
             });
 
             this.myLineChart.update()
