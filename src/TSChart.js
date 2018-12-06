@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Chart from 'chart.js';
 import './TSChart.css';
+import { sanitizeSymbolInput } from './utils.js'
 
 // Color scheme: https://coolors.co/fe938c-e6b89c-ead2ac-9cafb7-4281a4
 
@@ -56,7 +57,7 @@ class TSChart extends Component {
 
     async getSymbolDataFromQuaalude() {
         console.log("Getting Data From Quaalude..");
-        let dataFromQuaalude = await fetch("http://localhost:3001/tsdata/"+ this.state.symbol);
+        let dataFromQuaalude = await fetch("http://localhost:3001/tsdata/"+ sanitizeSymbolInput(this.state.symbol));
         let parsedResponse = await dataFromQuaalude.json();
         console.log("Data received: " + parsedResponse);
         
@@ -75,7 +76,7 @@ class TSChart extends Component {
     async getMultiSymbolDataFromQuaalude() {
         console.log('Getting Multidata from Quaalude..');
 
-        let sym = this.state.symbol.replace(/ /g,'')
+        let sym = sanitizeSymbolInput(this.state.symbol).replace(/ /g,'')
         let dataFromQuaalude = await fetch ('http://localhost:3001/multitsdata?symbols=' + sym);
         let parsedResponse = await dataFromQuaalude.json();
         console.log(parsedResponse)
@@ -92,6 +93,8 @@ class TSChart extends Component {
 
             // BUG: Trailing comma's screw this up
             let dataFromQuaalude = await this.getMultiSymbolDataFromQuaalude();
+            if (dataFromQuaalude['error'])
+                return;
             console.log(dataFromQuaalude.sequenceLabels);
             console.log('Updating chart with multi data. Num Rows: ' + dataFromQuaalude.sequenceLabels.length);
             
