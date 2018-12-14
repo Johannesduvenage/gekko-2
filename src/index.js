@@ -2,8 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import * as serviceWorker from './serviceWorker';
-import TSChart from './TSChart'
-import HistogramChart from './HistogramChart'
+import TSChart from './TSChart';
+import HistogramChart from './HistogramChart';
+import News from './News';
+import Stats from './Stats';
 
 // start development server:
 // > npm start
@@ -17,6 +19,8 @@ import HistogramChart from './HistogramChart'
 
 ReactDOM.render(<TSChart />, document.getElementById('root'));
 ReactDOM.render(<HistogramChart />, document.getElementById('hist'));
+ReactDOM.render(<Stats />, document.getElementById('stats'));
+ReactDOM.render(<News />, document.getElementById('news'));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
