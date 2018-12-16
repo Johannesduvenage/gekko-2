@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Chart from 'chart.js';
 import './HistogramChart.css';
+import { sanitizeSymbolInput } from './utils.js'
 
 
 class HistogramChart extends Component {
@@ -54,6 +55,9 @@ class HistogramChart extends Component {
     async changeData(event) {
         console.log('Updating Histogram Chart');
         let dataFromQuaalude = await this.getReturnDataFromQuaalude();
+        if (dataFromQuaalude['error'])
+            return;
+            
         this.myLineChart.data.labels = dataFromQuaalude.sequenceLabels.map((e) => Math.round(e) + ' %');
         this.myLineChart.data.datasets.forEach( (e) => {
             e.label = this.state.symbol + ' Returns';
@@ -66,7 +70,7 @@ class HistogramChart extends Component {
 
     async getReturnDataFromQuaalude() {
         console.log("Getting Return Data From Quaalude..");
-        let dataFromQuaalude = await fetch("http://localhost:3001/returndata/"+ this.state.symbol);
+        let dataFromQuaalude = await fetch("http://localhost:3001/returndata/"+ sanitizeSymbolInput(this.state.symbol));
         let parsedResponse = await dataFromQuaalude.json();
         console.log("Data received: " + parsedResponse);
         
