@@ -4,6 +4,7 @@ export const LOGIN_REQUEST = 'LOGIN_REQUEST'
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS'
 export const LOGIN_FAILURE = 'LOGIN_FAILURE'
 
+
 function requestLogin(creds) {
   return {
     type: LOGIN_REQUEST,
@@ -30,6 +31,7 @@ function loginError(message) {
     message
   }
 }
+
 
 
 // Three possible states for our logout process as well.
@@ -76,7 +78,46 @@ export function loginUser(creds) {
       // We dispatch requestLogin to kickoff the call to the API
       dispatch(requestLogin(creds))
   
-      return fetch('http://localhost:3001/auth/', config)
+      return fetch('http://localhost:3001/logon/', config)
+        .then(response =>
+          response.json().then(({user,token,message}) => ({ user, token,message, response }))
+              ).then(({ user, token,message, response }) =>  {
+          if (!response.ok) {
+            // If there was a problem, we want to
+            // dispatch the error condition
+            dispatch(loginError(message))
+            return Promise.reject(user)
+          } else {
+            // If login was successful, set the token in local storage
+            localStorage.setItem('id_token', token)
+            // Dispatch the success action
+            dispatch(receiveLogin(user))
+          }
+        }).catch(err => console.log("Error: ", err))
+    }
+  }
+
+  // Calls the API to get a token and
+// dispatches actions along the way
+export function signUpUser(creds) {
+
+    var data = { 
+        "email": creds.username,
+        "password": creds.password
+    };
+
+    let config = {
+      method: 'POST',
+      mode: 'cors',
+      headers: { 'Content-Type':'application/json' },
+      body: JSON.stringify(data)
+    }
+  
+    return dispatch => {
+      // We dispatch requestLogin to kickoff the call to the API
+      dispatch(requestLogin(creds))
+  
+      return fetch('http://localhost:3001/signup/', config)
         .then(response =>
           response.json().then(({user,token,message}) => ({ user, token,message, response }))
               ).then(({ user, token,message, response }) =>  {
