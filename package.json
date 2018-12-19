@@ -5,10 +5,14 @@
   "dependencies": {
     "chart.js": "^2.7.3",
     "package": "^1.0.1",
+    "prop-types": "^15.6.2",
     "react": "^16.6.3",
     "react-chartjs-2": "^2.7.4",
     "react-dom": "^16.6.3",
+    "react-redux": "^4.4.9",
     "react-scripts": "2.1.1",
+    "redux": "^3.7.2",
+    "redux-thunk": "^0.1.0",
     "validator": "^10.9.0"
   },
   "scripts": {
