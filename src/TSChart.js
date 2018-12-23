@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Chart from 'chart.js';
 import './TSChart.css';
 import { sanitizeSymbolInput } from './utils.js'
@@ -20,6 +21,7 @@ class TSChart extends Component {
     }
 
     render() {
+        const { isAuthenticated} = this.props
         return (
             <div>
                 <h1>My Portfolio</h1> 
@@ -226,5 +228,7 @@ class TSChart extends Component {
         });
     }
 }
-
+TSChart.propTypes = {
+    isAuthenticated: PropTypes.bool.isRequired,
+  }
 export default TSChart
