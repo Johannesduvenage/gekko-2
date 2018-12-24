@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux'
-import { loginUser, fetchQuote, fetchSecretQuote } from './actions/actionsLogon'
+import { fetchProfiles } from './actions/actionsProfiles'
 import Navbar from './components/Navbar'
 import TSChart from './components/TSChart';
 import SideBar from './components/SideBar'
@@ -26,6 +26,8 @@ class App extends Component {
         <Profiles
           profiles={profiles}
           errorMessage={errorMessageprofile}
+          isAuthenticated={isAuthenticated}
+          getProfileOnLogin={() => dispatch(fetchProfiles())}
           />
         <TSChart isAuthenticated={isAuthenticated}/>
 
@@ -41,7 +43,7 @@ App.propTypes = {
   dispatch: PropTypes.func.isRequired,
   isAuthenticated: PropTypes.bool.isRequired,
   errorMessagelogon: PropTypes.string,
-  profiles: PropTypes.array.isRequired,
+  profiles: PropTypes.string.isRequired,
   errorMessageprofile: PropTypes.string
 }
 

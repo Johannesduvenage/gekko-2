@@ -1,5 +1,6 @@
-// There are three possible states for our login
-// process and we need actions for each of them
+import { CALL_API } from '../middleware/profilesApi'
+
+
 export const PROFILE_ADD_REQUEST = 'PROFILE_ADD_REQUEST'
 export const PROFILE_ADD_SUCCESS = 'PROFILE_ADD_SUCCESS'
 export const PROFILE_ADD_FAILURE = 'ROFILE_ADD_FAILURE'
@@ -10,11 +11,14 @@ export const PROFILE_GET = 'PROFILE_GET'
 export const PROFILE_GET_FAILURE = 'PROFILE_GET_FAILURE'
 export const PROFILE_GET_SUCCESS = 'PROFILE_GET_SUCCESS'
 
-function requestProfiles(creds) {
+
+// Uses the API middlware to get a quote
+export function fetchProfiles() {
   return {
-    type: PROFILE_GET,
-    isFetching: true,
-    creds
+    [CALL_API]: {
+      endpoint: 'portfolio',
+      authenticated: true,
+      types: [PROFILE_GET, PROFILE_GET_SUCCESS, PROFILE_GET_FAILURE]
+    }
   }
 }
-

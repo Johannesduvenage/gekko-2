@@ -10,6 +10,7 @@ import App from './App'
 import { createStore, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
 import thunkMiddleware from 'redux-thunk'
+import api from './middleware/profilesApi'
 //import api from './middleware/api'
 // start development server:
 // > npm start
@@ -20,7 +21,7 @@ import thunkMiddleware from 'redux-thunk'
 // create production build:
 // > npm run build
 
-let createStoreWithMiddleware = applyMiddleware(thunkMiddleware)(createStore)
+let createStoreWithMiddleware = applyMiddleware(thunkMiddleware, api)(createStore)
 
 let store = createStoreWithMiddleware(stockApp)
 
