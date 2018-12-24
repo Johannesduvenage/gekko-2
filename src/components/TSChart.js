@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Chart from 'chart.js';
-import './TSChart.css';
 import { sanitizeSymbolInput } from './utils.js'
 
 // Color scheme: https://coolors.co/fe938c-e6b89c-ead2ac-9cafb7-4281a4

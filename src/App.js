@@ -3,9 +3,12 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux'
 import { loginUser, fetchQuote, fetchSecretQuote } from './actions/actionsLogon'
 import Navbar from './components/Navbar'
-import TSChart from './TSChart';
+import TSChart from './components/TSChart';
 import SideBar from './components/SideBar'
 import Profiles from './components/Profiles'
+import HistogramChart from './components/HistogramChart';
+import News from './components/News';
+import Stats from './components/Stats';
 
 class App extends Component {
   render() {
@@ -25,7 +28,11 @@ class App extends Component {
           errorMessage={errorMessageprofile}
           />
         <TSChart isAuthenticated={isAuthenticated}/>
-      </div>
+
+        <HistogramChart />
+        <Stats />
+        <News />
+        </div>
     )
   }
 }

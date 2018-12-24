@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import './TSChart.css';
 import { sanitizeSymbolInput } from './utils.js'
 
 class Stats extends Component {
