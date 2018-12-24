@@ -18,13 +18,13 @@ function callApi(endpoint, authenticated) {
 
   return fetch(BASE_URL + endpoint, config)
     .then(response =>
-      response.json().then(profiles => ({ profiles, response }))
-    ).then(({ profiles, response }) => {
+      response.json().then(portfolios => ({ portfolios, response }))
+    ).then(({ portfolios, response }) => {
       if (!response.ok) {
-        return Promise.reject(profiles)
+        return Promise.reject(portfolios)
       }
 
-      return profiles
+      return portfolios
     }).catch(err => console.log(err))
 }
 

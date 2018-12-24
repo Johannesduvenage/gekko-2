@@ -1,25 +1,25 @@
 import {
-    PROFILE_GET, PROFILE_GET_SUCCESS, PROFILE_GET_FAILURE
-  } from '../actions/actionsProfiles'
+    PORTFOLIO_GET, PORTFOLIO_GET_SUCCESS, PORTFOLIO_GET_FAILURE
+  } from '../actions/actionsPortfolios'
   
   // The auth reducer. The starting state sets authentication
   // based on a token being in local storage. In a real app,
   // we would also want a util to check if the token is expired.
-  export function profile(state = {
+  export function portfolio(state = {
       isFetching: false,
-      profiles: []
+      portfolio: []
     }, action) {
       switch (action.type) {
-        case PROFILE_GET:
+        case PORTFOLIO_GET:
           return Object.assign({}, state, {
             isFetching: true
           })
-        case PROFILE_GET_SUCCESS:
+        case PORTFOLIO_GET_SUCCESS:
           return Object.assign({}, state, {
             isFetching: false,
-            profiles: action.response,
+            portfolios: action.response,
           })
-        case PROFILE_GET_FAILURE:
+        case PORTFOLIO_GET_FAILURE:
           return Object.assign({}, state, {
             isFetching: false
           })

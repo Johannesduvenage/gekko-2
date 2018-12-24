@@ -1,16 +1,16 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types';
 
-export default class Profiles extends Component {
+export default class Portfolio extends Component {
 
   render() {
-    const { profiles, errorMessage, isAuthenticated,getProfileOnLogin } = this.props
-    console.log(profiles);
+    const { portfolios, errorMessage, isAuthenticated,getPortfolioOnLogin } = this.props
+    console.log(portfolios);
     var listItems;
     
     try {
       if(isAuthenticated)
-        listItems = profiles.map((d) => <li key={d.name}>{d.name}</li>);
+        listItems = portfolios.map((d) => <li key={d.name}>{d.name}</li>);
     } catch (e) {
 
     }
@@ -20,8 +20,8 @@ export default class Profiles extends Component {
 
         { isAuthenticated &&
           <div className='col-sm-3'>
-            <button onClick={getProfileOnLogin} className="btn btn-warning">
-              Get profiles
+            <button onClick={getPortfolioOnLogin} className="btn btn-warning">
+              Get portfolios
             </button>
           </div>
         }
@@ -36,9 +36,9 @@ export default class Profiles extends Component {
 
 }
 
-Profiles.propTypes = {
+Portfolio.propTypes = {
   errorMessage: PropTypes.string,
-  profiles: PropTypes.string,
+  portfolios: PropTypes.string,
   isAuthenticated: PropTypes.bool,
-  getProfileOnLogin: PropTypes.func
+  getPortfolioOnLogin: PropTypes.func
 }

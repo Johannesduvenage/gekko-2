@@ -1,18 +1,18 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux'
-import { fetchProfiles } from './actions/actionsProfiles'
+import { fetchPortfolios } from './actions/actionsPortfolios'
 import Navbar from './components/Navbar'
 import TSChart from './components/TSChart';
 import SideBar from './components/SideBar'
-import Profiles from './components/Profiles'
+import Portfolio from './components/Portfolio'
 import HistogramChart from './components/HistogramChart';
 import News from './components/News';
 import Stats from './components/Stats';
 
 class App extends Component {
   render() {
-    const { dispatch, isAuthenticated, errorMessagelogon, errorMessageprofile, profiles } = this.props
+    const { dispatch, isAuthenticated, errorMessagelogon, errorMessageprofile, portfolios } = this.props
     return (
       <div>
         <Navbar
@@ -23,11 +23,11 @@ class App extends Component {
         <SideBar
           isAuthenticated={isAuthenticated}
         />
-        <Profiles
-          profiles={profiles}
+        <Portfolio
+          portfolios={portfolios}
           errorMessage={errorMessageprofile}
           isAuthenticated={isAuthenticated}
-          getProfileOnLogin={() => dispatch(fetchProfiles())}
+          getPortfolioOnLogin={() => dispatch(fetchPortfolios())}
           />
         <TSChart isAuthenticated={isAuthenticated}/>
 
@@ -43,7 +43,7 @@ App.propTypes = {
   dispatch: PropTypes.func.isRequired,
   isAuthenticated: PropTypes.bool.isRequired,
   errorMessagelogon: PropTypes.string,
-  profiles: PropTypes.string.isRequired,
+  portfolios: PropTypes.string.isRequired,
   errorMessageprofile: PropTypes.string
 }
 
@@ -51,12 +51,12 @@ App.propTypes = {
 // state when it is started
 function mapStateToProps(state) {
 
-  const { profile, auth } = state
-  const { profiles, errorMessage: errorMessageprofile } = profile
+  const { portfolio, auth } = state
+  const { portfolios, errorMessage: errorMessageprofile } = portfolio
   const { isAuthenticated, errorMessage:errorMessagelogon } = auth
 
   return {
-    profiles,
+    portfolios,
     errorMessageprofile,
     isAuthenticated,
     errorMessagelogon
