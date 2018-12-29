@@ -12,13 +12,41 @@ export const PORTFOLIO_GET_FAILURE = 'PROFILE_GET_FAILURE'
 export const PORTFOLIO_GET_SUCCESS = 'PROFILE_GET_SUCCESS'
 
 
-// Uses the API middlware to get a quote
+// Uses the API middlware to get portfolios
 export function fetchPortfolios() {
   return {
     [CALL_API]: {
       endpoint: 'portfolio',
       authenticated: true,
       types: [PORTFOLIO_GET, PORTFOLIO_GET_SUCCESS, PORTFOLIO_GET_FAILURE]
+    }
+  }
+}
+
+// Uses the API middlware to add a portfolio
+export function addPortfolio(name) {
+  let data = {name: name};
+  return {
+    [CALL_API]: {
+      endpoint: 'portfolio/',
+      authenticated: true,
+      types: [PORTFOLIO_ADD_REQUEST, PORTFOLIO_ADD_SUCCESS, PORTFOLIO_ADD_FAILURE],
+      methodType: "POST",
+      data: data
+    }
+  }
+}
+
+// Uses the API middlware to delete a portfolio
+export function deletePortfolio(id) {
+  let data = {id: id};
+  return {
+    [CALL_API]: {
+      endpoint: 'portfolio/',
+      authenticated: true,
+      types: [PORTFOLIO_DELETE_REQUEST, PORTFOLIO_DELETE_SUCCESS, PORTFOLIO_DELETE_FAILURE],
+      methodType: "DELETE",
+      data: data
     }
   }
 }

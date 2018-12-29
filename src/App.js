@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux'
-import { fetchPortfolios } from './actions/actionsPortfolios'
+import { fetchPortfolios,addPortfolio, deletePortfolio } from './actions/actionsPortfolios'
 import Navbar from './components/Navbar'
 import TSChart from './components/TSChart';
 import SideBar from './components/SideBar'
@@ -28,6 +28,8 @@ class App extends Component {
           errorMessage={errorMessageprofile}
           isAuthenticated={isAuthenticated}
           getPortfolioOnLogin={() => dispatch(fetchPortfolios())}
+          addPortfolio={(name)=>dispatch(addPortfolio(name))}
+          deletePortfolio={(id)=>dispatch(deletePortfolio(id))}
           />
         <TSChart isAuthenticated={isAuthenticated}/>
 
@@ -43,7 +45,7 @@ App.propTypes = {
   dispatch: PropTypes.func.isRequired,
   isAuthenticated: PropTypes.bool.isRequired,
   errorMessagelogon: PropTypes.string,
-  portfolios: PropTypes.string.isRequired,
+  portfolios: PropTypes.array.isRequired,
   errorMessageprofile: PropTypes.string
 }
 

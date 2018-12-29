@@ -10,9 +10,14 @@ export default class Portfolio extends Component {
     
     try {
       if(isAuthenticated)
-        listItems = portfolios.map((d) => <li key={d.name}>{d.name}</li>);
+        listItems = portfolios.map((d) => 
+        <li key={d._id} >{d.name}
+           <button onClick={(event) => this.handleDeleteClick(event,d._id)} className="btn btn-warning">
+           delete
+           </button>
+      </li>);
     } catch (e) {
-
+      console.log(e)
     }
 
     return (
@@ -23,9 +28,15 @@ export default class Portfolio extends Component {
             <button onClick={getPortfolioOnLogin} className="btn btn-warning">
               Get portfolios
             </button>
-          </div>
+
+            {listItems}
+            <button onClick={(event) => this.handleAddClick(event)} className="btn btn-warning">
+              Add portfolios
+            </button>
+            <input type='text' ref='portfolioName' className="form-control" style={{ marginRight: '5px', }} placeholder='New Name'/>
+        
+          </div> 
         }
-        {listItems}
         
         {errorMessage &&
           <p style={{color:'red'}}>{errorMessage}</p>
@@ -33,12 +44,21 @@ export default class Portfolio extends Component {
       </div>
     )
   }
-
+  handleAddClick(event) {
+    const portfolioName = this.refs.portfolioName;
+    this.props.addPortfolio(portfolioName.value.trim());
+  }
+  handleDeleteClick(event,id)
+  {
+    this.props.deletePortfolio(id)
+  }
 }
+
 
 Portfolio.propTypes = {
   errorMessage: PropTypes.string,
   portfolios: PropTypes.string,
   isAuthenticated: PropTypes.bool,
-  getPortfolioOnLogin: PropTypes.func
+  getPortfolioOnLogin: PropTypes.func,
+  addPortfolio: PropTypes.func
 }
