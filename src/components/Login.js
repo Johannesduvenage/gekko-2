@@ -8,8 +8,8 @@ export default class Login extends Component {
 
     return (
       <div>
-        <input type='text' ref='username' className="form-control" style={{ marginBottom: '5px' }} placeholder='email'/>
-        <input type='password' ref='password' className="form-control" style={{ marginBottom: '5px' }} placeholder='Password'/>
+        <input type='text' ref='username' className="form-control" style={{ marginRight: '5px', }} placeholder='email'/>
+        <input type='password' ref='password' className="form-control" style={{ marginRight: '5px' }} placeholder='Password'/>
         <button onClick={(event) => this.handleLogonClick(event)} className="btn btn-primary" style={{ marginRight: '5px' }}>
           Login
         </button>

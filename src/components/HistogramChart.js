@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Chart from 'chart.js';
-import './HistogramChart.css';
 import { sanitizeSymbolInput } from './utils.js'
 
 

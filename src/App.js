@@ -1,45 +1,67 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux'
-import { loginUser, fetchQuote, fetchSecretQuote } from './actions'
+import { fetchPortfolios,addPortfolio, deletePortfolio } from './actions/actionsPortfolios'
 import Navbar from './components/Navbar'
+import TSChart from './components/TSChart';
+import SideBar from './components/SideBar'
+import Portfolio from './components/Portfolio'
+import HistogramChart from './components/HistogramChart';
+import News from './components/News';
+import Stats from './components/Stats';
 
 class App extends Component {
   render() {
-    const { dispatch, quote, isAuthenticated, errorMessage, isSecretQuote } = this.props
+    const { dispatch, isAuthenticated, errorMessagelogon, errorMessageprofile, portfolios } = this.props
     return (
       <div>
         <Navbar
           isAuthenticated={isAuthenticated}
-          errorMessage={errorMessage}
+          errorMessage={errorMessagelogon}
           dispatch={dispatch}
         />
-      </div>
+        <SideBar
+          isAuthenticated={isAuthenticated}
+        />
+        <Portfolio
+          portfolios={portfolios}
+          errorMessage={errorMessageprofile}
+          isAuthenticated={isAuthenticated}
+          getPortfolioOnLogin={() => dispatch(fetchPortfolios())}
+          addPortfolio={(name)=>dispatch(addPortfolio(name))}
+          deletePortfolio={(id)=>dispatch(deletePortfolio(id))}
+          />
+        <TSChart isAuthenticated={isAuthenticated}/>
+
+        <HistogramChart />
+        <Stats />
+        <News />
+        </div>
     )
   }
 }
 
 App.propTypes = {
   dispatch: PropTypes.func.isRequired,
-  quote: PropTypes.string,
   isAuthenticated: PropTypes.bool.isRequired,
-  errorMessage: PropTypes.string,
-  isSecretQuote: PropTypes.bool.isRequired
+  errorMessagelogon: PropTypes.string,
+  portfolios: PropTypes.array.isRequired,
+  errorMessageprofile: PropTypes.string
 }
 
 // These props come from the application's
 // state when it is started
 function mapStateToProps(state) {
 
-  const { quotes, auth } = state
-  const { quote, authenticated } = quotes
-  const { isAuthenticated, errorMessage } = auth
+  const { portfolio, auth } = state
+  const { portfolios, errorMessage: errorMessageprofile } = portfolio
+  const { isAuthenticated, errorMessage:errorMessagelogon } = auth
 
   return {
-    quote,
-    isSecretQuote: authenticated,
+    portfolios,
+    errorMessageprofile,
     isAuthenticated,
-    errorMessage
+    errorMessagelogon
   }
 }
 
